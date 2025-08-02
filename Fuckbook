@@ -1,8 +1,54 @@
+Here’s a bash script that automates bug bounty recon and scanning, using the top 5 most-used tools:
+
+⸻
+
+🛠️ Tools Included:
+	1.	subfinder – subdomain enumeration
+	2.	httpx – live host probing
+	3.	gau – gather URLs from Wayback/OTX
+	4.	nuclei – vulnerability scanning
+	5.	ffuf – directory fuzzing
+
+⸻
+
+📜 Script: bounty_hunter.sh
+
+# -----------------------------
+:
 ✅ To Use:
-Install the tools (see below)
-Save the script as bounty_hunter.sh
-Make it executable:
-  
+	1.	Install the tools (see below)
+	2.	Save the script as bounty_hunter.sh
+	3.	Make it executable:
+
 chmod +x bounty_hunter.sh
-  
+
+
+	 4.	Run it:
+
 ./bounty_hunter.sh target.com
+
+
+
+⸻
+
+🧱 Install Tools (One-liners):
+
+# Install subfinder
+go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+
+# Install httpx
+go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+
+# Install gau
+go install github.com/lc/gau/v2/cmd/gau@latest
+
+# Install nuclei
+go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+
+# Install ffuf
+go install github.com/ffuf/ffuf/v2@latest
+
+Also install SecLists for wordlists.
+
+⸻
+
