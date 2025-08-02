@@ -1,41 +1,8 @@
-#!/bin/bash
-
-# -----------------------------
-# Automated Bug Bounty Workflow
-# Requires: subfinder, httpx, gau, nuclei, ffuf
-# -----------------------------
-
-DOMAIN=$1
-WORDLIST="/usr/share/seclists/Discovery/Web-Content/common.txt"
-DATE=$(date +%F_%T)
-OUTPUT_DIR="bounty_output_$DOMAIN_$DATE"
-
-mkdir -p $OUTPUT_DIR
-
-echo "[*] Starting recon on $DOMAIN..."
-
-# 1. Subdomain Enumeration
-echo "[+] Running subfinder..."
-subfinder -d $DOMAIN -silent > $OUTPUT_DIR/subdomains.txt
-
-# 2. Probing Live Hosts
-echo "[+] Checking live hosts with httpx..."
-httpx -l $OUTPUT_DIR/subdomains.txt -silent > $OUTPUT_DIR/live_hosts.txt
-
-# 3. Gathering URLs
-echo "[+] Getting URLs with gau..."
-gau $DOMAIN | tee $OUTPUT_DIR/gau_urls.txt
-
-# 4. Scanning with Nuclei
-echo "[+] Scanning with nuclei..."
-nuclei -l $OUTPUT_DIR/live_hosts.txt -o $OUTPUT_DIR/nuclei_report.txt
-
-# 5. Directory fuzzing with ffuf
-echo "[+] Running ffuf on live hosts..."
-while read url; do
-  echo "[-] Fuzzing $url"
-  ffuf -w $WORDLIST -u "$url/FUZZ" -mc 200,204,301,302 -t 40 \
-       -of html -o $OUTPUT_DIR/ffuf_$(echo $url | sed 's/https\?:\/\///g').html
-done < $OUTPUT_DIR/live_hosts.txt
-
-echo "[✓] Recon completed. Output saved in $OUTPUT_DIR/"
+✅ To Use:
+Install the tools (see below)
+Save the script as bounty_hunter.sh
+Make it executable:
+  
+chmod +x bounty_hunter.sh
+  
+./bounty_hunter.sh target.com
